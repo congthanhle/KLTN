@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default function Button({ title, onPress, icon, color }: {title: string, onPress: any, icon: string, color: string}) {
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
-      <Icon name={icon} size={24} color={color ? color : '#f1f1f1'}/>
-      <Text style={styles.text}>{title}</Text>
+      {icon && <Icon name={icon} size={24} color={color ? color : '#f1f1f1'}/>}
+      {title && <Text style={styles.text}>{title}</Text>}
     </TouchableOpacity>
   );
 }

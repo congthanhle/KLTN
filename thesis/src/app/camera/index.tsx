@@ -5,7 +5,7 @@ import * as MediaLibrary from "expo-media-library";
 import TsButton from "@common/TsButton";
 import TsLink from "@/components/common/TsButton/TsLink";
 import { Header } from "react-native-elements";
-import {Color} from '@utils/TsColorConstant';
+import { Color } from "@utils/TsColorConstant";
 
 export default function App() {
   const [hasCameraPermission, setHasCameraPermission] = useState(true);
@@ -54,9 +54,18 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Header
-        leftComponent={<TsLink title="" color="" icon="home" path="/"/>}
+        leftComponent={<TsLink title="" color="" icon="home" path="/" />}
         centerComponent={{ text: "SCAN", style: { color: "#fff" } }}
-        backgroundColor="#FFC0CB"
+        rightComponent={<TsButton
+          title=""
+          onPress={() => {
+            setFlash(flash === FlashMode.off ? FlashMode.on : FlashMode.off);
+          }}
+          icon="flash"
+          color={flash === FlashMode.off ? "gray" : "#fff"}
+        />}
+        backgroundColor={Color.COLOR_01}
+        containerStyle = {{paddingHorizontal: 30}}
       />
       {!image ? (
         <Camera
@@ -64,6 +73,7 @@ export default function App() {
           type={type}
           ref={cameraRef}
           flashMode={flash}
+          zoom={0.1}
         >
           <View style={styles.overlay}>
             <View style={styles.crosshair}>
@@ -76,25 +86,14 @@ export default function App() {
       )}
       {!image ? (
         <View style={styles.controls}>
-          <TsButton
-            title=""
-            icon="retweet"
-            onPress={() => {
-              setType(
-                type === CameraType.back ? CameraType.front : CameraType.back
-              );
-            }}
-            color=""
-          />
-          <TsButton title="" onPress={takePicture} icon="camera" color="#FF0833" />
-          <TsButton
-            title=""
-            onPress={() => {
-              setFlash(flash === FlashMode.off ? FlashMode.on : FlashMode.off);
-            }}
-            icon="flash"
-            color={flash === FlashMode.off ? "gray" : "#fff"}
-          />
+          <View style={styles.buttonWrapper}>
+            <TsButton
+              title=""
+              onPress={takePicture}
+              icon="camera"
+              color={Color.COLOR_07}
+            />
+          </View>
         </View>
       ) : (
         <View style={styles.controls}>
@@ -120,9 +119,10 @@ const styles = StyleSheet.create({
   controls: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
+    alignItems: 'center',
     paddingHorizontal: 50,
-    backgroundColor: Color.COLOR_01
+    backgroundColor: Color.COLOR_01,
   },
   text: {
     fontWeight: "bold",
@@ -139,17 +139,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   crosshair: {
-    width: 160,
-    height: 160,
+    width: 148,
+    height: 148,
     borderColor: "white",
     borderWidth: 1,
-    borderRadius: 80,
+    borderRadius: 74,
     justifyContent: "center",
     alignItems: "center",
-    borderStyle: "dashed",
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
   },
   crosshairText: {
     color: "white",
     fontSize: 24,
+  },
+  buttonWrapper: {
+    width: 80,
+    height: 80,
+    borderRadius: 30,
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: Color.COLOR_07,
   },
 });
